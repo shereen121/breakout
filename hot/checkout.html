@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Breakout Cafe</title>
+    <link rel="stylesheet" href="checkout.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- User Account Display (Top Left) -->
+    <div id="user-account-display" style="
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 15px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(45, 95, 63, 0.2);
+        z-index: 1000;
+        display: none;
+        min-width: 200px;
+        border: 2px solid #2D5F3F;
+    ">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+            <div style="
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, #2D5F3F 0%, #1a4d2e 100%);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-weight: bold;
+                font-size: 1.2em;
+            " id="user-initial">👤</div>
+            <div>
+                <div style="font-weight: 700; color: #2D5F3F; font-size: 1.1em;" id="user-display-name">User</div>
+                <div style="font-size: 0.85em; color: #666;" id="user-display-email">email@example.com</div>
+            </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.9em; padding-top: 10px; border-top: 1px solid #E8F5E9;">
+            <div>
+                <div style="color: #666;">Points</div>
+                <div style="font-weight: 700; color: #2D5F3F;" id="user-display-points">0</div>
+            </div>
+            <div>
+                <div style="color: #666;">Wallet</div>
+                <div style="font-weight: 700; color: #2D5F3F;" id="user-display-wallet">0 EGY</div>
+            </div>
+        </div>
+        <button onclick="logout()" style="
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            background: #E8F5E9;
+            color: #2D5F3F;
+            border: 1px solid #2D5F3F;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+        ">Logout</button>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <a href="index.html" class="back-btn">← Back to Menu</a>
+        <h1>🛒 Order Summary</h1>
+        <p>Review and complete your order</p>
+    </div>
+
+    <div class="container">
+        <div class="checkout-wrapper">
+            <!-- Order Details -->
+            <div class="order-section">
+                <h2>Order Details</h2>
+                <div class="order-card">
+                    <div class="order-image">
+                        <img id="orderImage" src="" alt="Drink">
+                    </div>
+                    <div class="order-details">
+                        <h3 id="orderDrink">Drink Name</h3>
+                        <div class="detail-row">
+                            <span class="label">Flavor:</span>
+                            <span id="orderFlavor" class="value">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Size:</span>
+                            <span id="orderSize" class="value">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Quantity:</span>
+                            <span id="orderQuantity" class="value">-</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="label">Notes:</span>
+                            <span id="orderNotes" class="value">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Summary -->
+            <div class="price-section">
+                <h2>Price Summary</h2>
+                <div class="price-card">
+                    <div class="price-row">
+                        <span>Unit Price:</span>
+                        <span id="unitPrice">0 EGY</span>
+                    </div>
+                    <div class="price-row">
+                        <span>Quantity:</span>
+                        <span id="quantityPrice">x1</span>
+                    </div>
+                    <div class="price-row total">
+                        <span>Total:</span>
+                        <span id="totalPrice">0 EGY</span>
+                    </div>
+                    <div class="points-row">
+                        <span>Points Earned:</span>
+                        <span id="pointsEarned">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-section">
+                <h2>Payment Method</h2>
+                <div class="payment-methods">
+                    <button class="payment-btn active" onclick="selectPayment('card')">
+                        <span class="icon">💳</span>
+                        <span>Credit Card</span>
+                    </button>
+                    <button class="payment-btn" onclick="selectPayment('wallet')">
+                        <span class="icon">💰</span>
+                        <span>Wallet</span>
+                    </button>
+                    <button class="payment-btn" onclick="selectPayment('cash')">
+                        <span class="icon">💵</span>
+                        <span>Cash</span>
+                    </button>
+                    <button class="payment-btn" onclick="selectPayment('paypal')">
+                        <span class="icon">🌐</span>
+                        <span>PayPal</span>
+                    </button>
+                    <button class="payment-btn" onclick="selectPayment('apple')">
+                        <span class="icon">🍎</span>
+                        <span>Apple Pay</span>
+                    </button>
+                    <button class="payment-btn" onclick="selectPayment('google')">
+                        <span class="icon">🔵</span>
+                        <span>Google Pay</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Payment Form Container -->
+            <div id="paymentFormContainer" class="payment-section" style="display: none;"></div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn-cancel" onclick="goBack()">Cancel Order</button>
+                <button class="btn-confirm" onclick="confirmOrder()">Confirm & Pay</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="checkout.js"></script>
+</body>
+</html>
+

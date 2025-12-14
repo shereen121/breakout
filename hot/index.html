@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hot Drinks - Breakout Cafe</title>
+<link rel="stylesheet" href="drinks.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+   #user-display {
+    font-size: 1.2em; 
+    margin-bottom: 20px; 
+    padding: 20px; 
+    background: #eee; 
+    border-radius: 5px; 
+    display: inline-block;
+    text-align: left;
+  }
+  #user-display p { margin: 5px 0; }
+  #recharge-btn {
+    padding: 10px 20px; 
+    font-size: 1em; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    background: #006600; 
+    color: white; 
+    display: block;
+    margin: 0 auto;
+  }
+  #recharge-btn:hover { background: #228B22; }
+
+     h3.span {
+  font-size: 3vw;
+  letter-spacing: 0.5em;
+  font-family: "ROBOTO", serif;
+  font-weight: 100;
+  color: #100;
+  z-index: 5;
+}
+    .loader span {
+  color: #ffffff;
+  text-shadow: 0 0 0 #006400
+;
+  -webkit-animation: loading 2s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes loading {
+  to {
+    text-shadow: 20px 0 70px #ff0266;
+    color: #006400;
+  }
+}
+.loader span:nth-child(2) {
+  -webkit-animation-delay: 0.1s;
+}
+.loader span:nth-child(3) {
+  -webkit-animation-delay: 0.2s;
+}
+.loader span:nth-child(4) {
+  -webkit-animation-delay: 0.3s;
+}
+.loader span:nth-child(5) {
+  -webkit-animation-delay: 0.4s;
+}
+.loader span:nth-child(6) {
+  -webkit-animation-delay: 0.5s;
+}
+.loader span:nth-child(7) {
+  -webkit-animation-delay: 0.6s;
+}
+.loader span:nth-child(8) {
+  -webkit-animation-delay: 0.7s;
+}
+.loader span:nth-child(9) {
+  -webkit-animation-delay: 0.8s;
+}
+
+.loader span:nth-child(10) {
+  -webkit-animation-delay: 0.9s;
+}
+.loader span:nth-child(11) {
+  -webkit-animation-delay: 1s;
+}
+.loader span:nth-child(12) {
+  -webkit-animation-delay: 1.1s;
+}
+.loader span:nth-child(13) {
+  -webkit-animation-delay: 1.2s;
+}
+.loader span:nth-child(14) {
+  -webkit-animation-delay: 1.3s;
+}
+.loader span:nth-child(15) {
+  -webkit-animation-delay: 1.4s;
+}
+.loader span:nth-child(16) {
+  -webkit-animation-delay: 1.5s;
+}
+.loader span:nth-child(17) {
+  -webkit-animation-delay: 1.6s;
+}
+.loader span:nth-child(18) {
+  -webkit-animation-delay: 1.7s;
+}
+.loader span:nth-child(19) {
+  -webkit-animation-delay: 1.8s;
+}
+.loader span:nth-child(20) {
+  -webkit-animation-delay: 1.9s;
+}
+.loader span:nth-child(21) {
+  -webkit-animation-delay: 2s;
+}
+.loader span:nth-child(22) {
+  -webkit-animation-delay: 2.1s;
+}
+/* الكارت الخارجي الثابت على اليمين */
+/* كارت المستخدم */
+
+/* الحاوية المثبتة */
+/* الحاوية المثبتة للكارتين */
+/* كارت المستخدم */
+#user-card {
+    position: fixed;
+    top: 20px;        /* مسافة من أعلى الصفحة */
+    right: 20px;      /* على اليمين */
+    width: 170px;
+    height: 100px;    /* ارتفاع ثابت */
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    text-align: center;
+    overflow: hidden;
+}
+
+/* كارت الأوردر */
+#sidebar-card {
+    position: fixed;
+    top: 20px;             /* نفس المسافة من أعلى الصفحة */
+    right: 240px;          /* يبعد عن كارت المستخدم بمقدار 20px + عرض الكارت */
+    width: 220px;
+    height: 100px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    text-align: center;
+    overflow: auto;        /* يسمح بالتمرير إذا زاد المحتوى */
+}
+
+
+
+
+#checkout-btn {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 8px;
+    background-color: #28a745;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#checkout-btn:hover {
+    background-color: #218838;
+}
+
+
+  body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5;}
+  .cards-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .card {
+    width: 180px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;
+    background: rgb(255, 255, 255); box-shadow: 2px 4px 8px #ffffff20;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  
+  .card img { width: 100%; height: 120px; object-fit: cover; border-radius: 5px; margin-bottom: 5px; }
+  .card h5 { font-size: 1em; margin: 5px 0; text-align: center; }
+  .card label { font-size: 0.9em; }
+  .card input[type="number"], .card select { width: 100%; margin-bottom: 5px; padding: 3px; }
+  .btn-order {
+    background: #006600; color: rgb(255, 255, 255); padding: 5px; border: none; border-radius: 3px; cursor: pointer; width: 100%;
+    font-size: 0.9em; font-weight: bold;
+  }
+  
+  .btn-order:hover { background: #228B22; }
+  #cart-items { margin-top: 20px; padding-left: 0; list-style: none; }
+  #cart-items li { background: #eee; padding: 5px; margin-bottom: 5px; border-radius: 3px; }
+  #complete-order {
+    background: #FF6600; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;
+    margin-top: 10px;
+  }
+  #complete-order:hover { background: #FF8533; }
+
+
+
+  /* Professional Modal Styles */
+  #loginModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #loginModal.show {
+    display: flex;
+  }
+
+  .auth-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 450px;
+    padding: 0;
+    overflow: hidden;
+    animation: slideIn 0.3s ease-out;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .auth-header {
+    background: linear-gradient(135deg, #2D5F3F 0%, #1a4d2e 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+  }
+
+  .auth-header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .auth-close-btn-new {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-size: 24px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-close-btn-new:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+  }
+
+  .auth-body {
+    padding: 40px;
+  }
+
+  .auth-form {
+    display: none;
+  }
+
+  .auth-form.active {
+    display: block;
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .form-group-auth {
+    margin-bottom: 20px;
+  }
+
+  .form-group-auth label {
+    display: block;
+    margin-bottom: 8px;
+    color: #2D5F3F;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .form-group-auth input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #E8F5E9;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  .form-group-auth input:focus {
+    outline: none;
+    border-color: #2D5F3F;
+    box-shadow: 0 0 0 3px rgba(45, 95, 63, 0.1);
+  }
+
+  .auth-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #2D5F3F 0%, #1a4d2e 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+  }
+
+  .auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(45, 95, 63, 0.3);
+  }
+
+  .auth-btn:active {
+    transform: translateY(0);
+  }
+
+  .auth-toggle {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #E8F5E9;
+  }
+
+  .auth-toggle p {
+    color: #666;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .auth-toggle-btn {
+    background: none;
+    border: none;
+    color: #2D5F3F;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: underline;
+    transition: all 0.3s ease;
+  }
+
+  .auth-toggle-btn:hover {
+    color: #1a4d2e;
+  }
+
+  .error-message {
+    color: #d32f2f;
+    font-size: 13px;
+    margin-top: 5px;
+    display: none;
+  }
+
+  .error-message.show {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<!-- User Account Display (Top Left) -->
+<div id="user-account-display" style="
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(45, 95, 63, 0.2);
+    z-index: 1000;
+    display: none;
+    min-width: 200px;
+    border: 2px solid #2D5F3F;
+">
+    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+        <div style="
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #2D5F3F 0%, #1a4d2e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        " id="user-initial">👤</div>
+        <div>
+            <div style="font-weight: 700; color: #2D5F3F; font-size: 1.1em;" id="user-display-name">User</div>
+            <div style="font-size: 0.85em; color: #666;" id="user-display-email">email@example.com</div>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; font-size: 0.9em; padding-top: 10px; border-top: 1px solid #E8F5E9;">
+        <div>
+            <div style="color: #666;">Points</div>
+            <div style="font-weight: 700; color: #2D5F3F;" id="user-display-points">0</div>
+        </div>
+        <div>
+            <div style="color: #666;">Wallet</div>
+            <div style="font-weight: 700; color: #2D5F3F;" id="user-display-wallet">0 EGY</div>
+        </div>
+    </div>
+    <button onclick="logout()" style="
+        width: 100%;
+        margin-top: 10px;
+        padding: 8px;
+        background: #E8F5E9;
+        color: #2D5F3F;
+        border: 1px solid #2D5F3F;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9em;
+    ">Logout</button>
+</div>
+
+<!-- Header -->
+<div class="header">
+    <a href="../home.html" class="back-btn">← Back to Home</a>
+    <h1>☕ Hot Drinks</h1>
+    <p>Warm beverages to comfort your soul</p>
+</div>
+
+<!-- User Display -->
+<div id="user-display">
+    <div class="user-info-item">
+        <span class="label">👤 User:</span>
+        <span class="value" id="user-name">Loading...</span>
+    </div>
+    <div class="user-info-item">
+        <span class="label">⭐ Points:</span>
+        <span class="value" id="user-points">0</span>
+    </div>
+    <div class="user-info-item">
+        <span class="label">💰 Wallet:</span>
+        <span class="value" id="user-balance">0 EGY</span>
+    </div>
+</div>
+
+<!-- Cart Button -->
+<a href="cart hot.html"
+   style="
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, #2D5F3F 0%, #1a4d2e 100%);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 1.5em;
+      text-decoration: none;
+      z-index: 999;
+      box-shadow: 0 6px 20px rgba(45, 95, 63, 0.4);
+      transition: all 0.3s ease;
+   "
+   onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='0 8px 30px rgba(45, 95, 63, 0.5)';"
+   onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 6px 20px rgba(45, 95, 63, 0.4)';">
+   🛒
+   <span id="cart-count" style="
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: #FF6600;
+        color: white;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        font-weight: bold;
+   ">0</span>
+</a>
+
+<div class="container">
+  <div class="drinks-list">
+    <!-- Drink 1: Tea -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/tea.jpg" alt="Tea">
+      </div>
+      <div class="drink-info">
+        <h3>Tea</h3>
+        <p>Hot tea with mint, green tea, lemon, and milk options</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Tea', 10, 5, ['Plain', 'Mint', 'Green Tea', 'Lemon', 'With Milk'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 2: Turkish Coffee -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/turky coffe.jpg" alt="Turkish Coffee">
+      </div>
+      <div class="drink-info">
+        <h3>Turkish Coffee</h3>
+        <p>Traditional Turkish coffee served single or double with sugar options</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Turkish Coffee', 25, 10, ['Single Plain', 'Single Sweet', 'Double Plain', 'Double Sweet'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 3: French Coffee -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/french coffe.jpg" alt="French Coffee">
+      </div>
+      <div class="drink-info">
+        <h3>French Coffee</h3>
+        <p>Premium French coffee served single or double with sugar options</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('French Coffee', 30, 10, ['Single Plain', 'Single Sweet', 'Double Plain', 'Double Sweet'])">Add to Cart</button>
+    </div>
+    <!-- Drink 4: Hazelnut Coffee -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/بندق.jpg" alt="Hazelnut Coffee">
+      </div>
+      <div class="drink-info">
+        <h3>Hazelnut Coffee</h3>
+        <p>Rich hazelnut flavored coffee served single or double</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Hazelnut Coffee', 30, 10, ['Single', 'Double'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 5: Mint Tea -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/نعناع.png" alt="Mint Tea">
+      </div>
+      <div class="drink-info">
+        <h3>Mint Tea</h3>
+        <p>Fresh hot mint tea with soothing herbal flavor</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Mint Tea', 10, 5, ['Hot Mint'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 6: Anise Tea -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/ينسون.jpg" alt="Anise Tea">
+      </div>
+      <div class="drink-info">
+        <h3>Anise Tea</h3>
+        <p>Traditional anise tea with lemon option for extra flavor</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Anise Tea', 10, 5, ['Plain', 'With Lemon'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 7: Hibiscus -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/كركديه.jpg" alt="Hibiscus">
+      </div>
+      <div class="drink-info">
+        <h3>Hibiscus</h3>
+        <p>Refreshing hot hibiscus tea with natural flavor</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Hibiscus', 10, 5, ['Hot Hibiscus'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 8: Espresso -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/اسبرسو.jpg" alt="Espresso">
+      </div>
+      <div class="drink-info">
+        <h3>Espresso</h3>
+        <p>Strong Italian espresso served single or double shot</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Espresso', 35, 15, ['Single', 'Double'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 9: Nescafe Gold -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/gold.jpg" alt="Nescafe Gold">
+      </div>
+      <div class="drink-info">
+        <h3>Nescafe Gold</h3>
+        <p>Premium instant coffee with cappuccino, latte, vanilla, mocha, and caramel options</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Nescafe Gold', 30, 20, ['Cappuccino', 'Latte', 'Vanilla', 'Mocha', 'Caramel', 'Cappuccino No Milk', 'Latte No Milk', 'Vanilla No Milk', 'Mocha No Milk', 'Caramel No Milk'])">Add to Cart</button>
+    </div>
+    <!-- Drink 10: Bonjorno -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/bonjorno.jpg" alt="Bonjorno">
+      </div>
+      <div class="drink-info">
+        <h3>Bonjorno</h3>
+        <p>Premium coffee with latte and mocha options, with or without milk</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Bonjorno', 30, 20, ['Latte', 'Mocha', 'Latte No Milk', 'Mocha No Milk'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 11: Nescafe 3x1 -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/3x1" alt="Nescafe 3x1">
+      </div>
+      <div class="drink-info">
+        <h3>Nescafe 3x1</h3>
+        <p>Instant coffee with chocolate, hazelnut, and caramel flavors</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Nescafe 3x1', 30, 20, ['Plain', 'Chocolate', 'Hazelnut', 'Caramel', 'Plain No Milk', 'Chocolate No Milk', 'Hazelnut No Milk', 'Caramel No Milk'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 12: Nescafe Black -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/نسكافيه.jpeg" alt="Nescafe Black">
+      </div>
+      <div class="drink-info">
+        <h3>Nescafe Black</h3>
+        <p>Strong black coffee served with or without milk</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Nescafe Black', 30, 20, ['With Milk', 'Plain'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 13: Hot Chocolate -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/hot choclet.jpg" alt="Hot Chocolate">
+      </div>
+      <div class="drink-info">
+        <h3>Hot Chocolate</h3>
+        <p>Creamy hot chocolate with rich cocoa flavor</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Hot Chocolate', 25, 15, ['Regular'])">Add to Cart</button>
+    </div>
+    <!-- Drink 14: Sahlab -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/images.jpg" alt="Sahlab">
+      </div>
+      <div class="drink-info">
+        <h3>Sahlab</h3>
+        <p>Traditional warm sahlab drink with creamy texture and spices</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Sahlab', 35, 20, ['Traditional'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 15: Cinnamon Tea -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/قرفة.jpg" alt="Cinnamon Tea">
+      </div>
+      <div class="drink-info">
+        <h3>Cinnamon Tea</h3>
+        <p>Warm cinnamon tea with or without milk</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Cinnamon Tea', 10, 5, ['Plain', 'With Milk'])">Add to Cart</button>
+    </div>
+
+    <!-- Drink 16: Water -->
+    <div class="drink-item">
+      <div class="drink-image">
+        <img src="img/water.png" alt="Water">
+      </div>
+      <div class="drink-info">
+        <h3>Water</h3>
+        <p>Fresh cold or hot water</p>
+      </div>
+      <button class="add-to-cart-btn" onclick="openModal('Water', 5, 0, ['Cold', 'Hot'])">Add to Cart</button>
+    </div>
+  </div>
+</div>
+
+<!-- Checkout Section -->
+<div id="checkoutSection" style="display: none; background: #FFFFFF; margin: 40px auto; padding: 40px; max-width: 900px; border-radius: 15px; box-shadow: 0 4px 15px rgba(45, 95, 63, 0.1);">
+  <h2 style="color: #2D5F3F; font-size: 2rem; margin-bottom: 30px; font-family: 'Playfair Display', serif;">🛒 Order Summary</h2>
+
+  <!-- Order Details -->
+  <div style="background: #F5F5F0; padding: 25px; border-radius: 12px; margin-bottom: 30px; border-left: 5px solid #2D5F3F;">
+    <h3 style="color: #2D5F3F; margin-bottom: 20px; font-family: 'Playfair Display', serif;">Order Details</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div><strong style="color: #2D5F3F;">Drink:</strong> <span id="checkoutDrinkName">-</span></div>
+      <div><strong style="color: #2D5F3F;">Flavor:</strong> <span id="checkoutFlavor">-</span></div>
+      <div><strong style="color: #2D5F3F;">Size:</strong> <span id="checkoutSize">-</span></div>
+      <div><strong style="color: #2D5F3F;">Quantity:</strong> <span id="checkoutQuantity">-</span></div>
+      <div style="grid-column: 1 / -1;"><strong style="color: #2D5F3F;">Notes:</strong> <span id="checkoutNotes">-</span></div>
+    </div>
+  </div>
+
+  <!-- Price Summary -->
+  <div style="background: #F5F5F0; padding: 25px; border-radius: 12px; margin-bottom: 30px; border-left: 5px solid #2D5F3F;">
+    <h3 style="color: #2D5F3F; margin-bottom: 20px; font-family: 'Playfair Display', serif;">Price Summary</h3>
+    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #DDD;">
+      <span>Unit Price:</span>
+      <span id="checkoutPrice">0 EGY</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #DDD;">
+      <span>Total:</span>
+      <span id="checkoutTotal" style="font-weight: 700; font-size: 1.2rem; color: #2D5F3F;">0 EGY</span>
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: 10px 0; color: #2D5F3F; font-weight: 700;">
+      <span>Points Earned:</span>
+      <span id="checkoutPoints">0</span>
+    </div>
+  </div>
+
+  <!-- Payment Methods -->
+  <div style="margin-bottom: 30px;">
+    <h3 style="color: #2D5F3F; margin-bottom: 20px; font-family: 'Playfair Display', serif;">Select Payment Method</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px;">
+      <button class="payment-option-btn" onclick="selectPaymentMethod('Credit Card')" style="padding: 20px; border: 2px solid #E8F5E9; background: #FFFFFF; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; color: #2D5F3F;">💳 Credit Card</button>
+      <button class="payment-option-btn" onclick="selectPaymentMethod('Wallet')" style="padding: 20px; border: 2px solid #E8F5E9; background: #FFFFFF; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; color: #2D5F3F;">💰 Wallet</button>
+      <button class="payment-option-btn" onclick="selectPaymentMethod('Cash')" style="padding: 20px; border: 2px solid #E8F5E9; background: #FFFFFF; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; color: #2D5F3F;">💵 Cash</button>
+      <button class="payment-option-btn" onclick="selectPaymentMethod('PayPal')" style="padding: 20px; border: 2px solid #E8F5E9; background: #FFFFFF; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; color: #2D5F3F;">🌐 PayPal</button>
+      <button class="payment-option-btn" onclick="selectPaymentMethod('Apple Pay')" style="padding: 20px; border: 2px solid #E8F5E9; background: #FFFFFF; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; color: #2D5F3F;">🍎 Apple Pay</button>
+      <button class="payment-option-btn" onclick="selectPaymentMethod('Google Pay')" style="padding: 20px; border: 2px solid #E8F5E9; background: #FFFFFF; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; font-weight: 600; color: #2D5F3F;">🔵 Google Pay</button>
+    </div>
+  </div>
+
+  <!-- Payment Form -->
+  <div id="paymentForm" style="display: none; background: #F5F5F0; padding: 25px; border-radius: 12px; margin-bottom: 30px; border-left: 5px solid #2D5F3F;">
+    <h3 id="paymentFormTitle" style="color: #2D5F3F; margin-bottom: 20px; font-family: 'Playfair Display', serif;">Payment Details</h3>
+    <div style="display: flex; flex-direction: column; gap: 15px;">
+      <input type="text" placeholder="Card Holder Name" style="padding: 12px; border: 2px solid #E8F5E9; border-radius: 8px; font-family: 'Roboto', sans-serif;">
+      <input type="text" placeholder="Card Number (16 digits)" style="padding: 12px; border: 2px solid #E8F5E9; border-radius: 8px; font-family: 'Roboto', sans-serif;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <input type="text" placeholder="MM/YY" style="padding: 12px; border: 2px solid #E8F5E9; border-radius: 8px; font-family: 'Roboto', sans-serif;">
+        <input type="text" placeholder="CVV" style="padding: 12px; border: 2px solid #E8F5E9; border-radius: 8px; font-family: 'Roboto', sans-serif;">
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div style="display: flex; gap: 20px;">
+    <button onclick="completePayment()" style="flex: 1; padding: 16px; background: linear-gradient(135deg, #2D5F3F 0%, #1a4d2e 100%); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Confirm & Pay</button>
+    <button onclick="cancelCheckout()" style="flex: 1; padding: 16px; background: #E8F5E9; color: #2D5F3F; border: 2px solid #2D5F3F; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px;">Cancel Order</button>
+  </div>
+</div>
+
+<!-- Modal for Drink Details -->
+<div id="drinkModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalDrinkName">Drink Name</h2>
+      <button class="close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Flavor</label>
+        <select id="modalFlavor">
+          <option>Select a flavor</option>
+        </select>
+      </div>
+      <div class="form-group size-group">
+        <label>Size</label>
+        <div class="size-buttons">
+          <button type="button" class="size-btn" onclick="selectSize('S')">S</button>
+          <button type="button" class="size-btn" onclick="selectSize('M')">M</button>
+          <button type="button" class="size-btn" onclick="selectSize('L')">L</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Quantity</label>
+        <input type="number" id="modalQuantity" value="1" min="1">
+      </div>
+      <div class="form-group">
+        <label>Special Notes</label>
+        <input type="text" id="modalNotes" placeholder="Add any special requests...">
+      </div>
+      <div class="price-info">
+        <p>Price per item: <span id="modalPrice">0</span> EGY</p>
+        <p>Points: <span id="modalPoints">0</span></p>
+        <p class="price">Total: <span id="modalTotal">0</span> EGY</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="confirm-btn" onclick="proceedToCheckout()">Add to Cart</button>
+      <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Professional Login/Signup Modal -->
+<div id="loginModal">
+  <div class="auth-container">
+    <div class="auth-header">
+      <h2 id="authTitle">Login</h2>
+      <button class="auth-close-btn-new" onclick="closeLoginModal()">✕</button>
+    </div>
+
+    <div class="auth-body">
+      <!-- LOGIN FORM -->
+      <form id="authLoginForm" class="auth-form active">
+        <div class="form-group-auth">
+          <label for="authLoginEmail">Email Address</label>
+          <input type="email" id="authLoginEmail" placeholder="Enter your email" required>
+          <div class="error-message" id="loginEmailError"></div>
+        </div>
+
+        <div class="form-group-auth">
+          <label for="authLoginPassword">Password</label>
+          <input type="password" id="authLoginPassword" placeholder="Enter your password" required>
+          <div class="error-message" id="loginPasswordError"></div>
+        </div>
+
+        <button type="button" class="auth-btn" onclick="handleLogin()">Login</button>
+
+        <div class="auth-toggle">
+          <p>Don't have an account? <button type="button" class="auth-toggle-btn" onclick="toggleAuthForm()">Sign Up</button></p>
+        </div>
+      </form>
+
+      <!-- SIGNUP FORM -->
+      <form id="authSignupForm" class="auth-form">
+        <div class="form-group-auth">
+          <label for="authSignupUsername">Full Name</label>
+          <input type="text" id="authSignupUsername" placeholder="Enter your full name" required>
+          <div class="error-message" id="signupNameError"></div>
+        </div>
+
+        <div class="form-group-auth">
+          <label for="authSignupEmail">Email Address</label>
+          <input type="email" id="authSignupEmail" placeholder="Enter your email" required>
+          <div class="error-message" id="signupEmailError"></div>
+        </div>
+
+        <div class="form-group-auth">
+          <label for="authSignupPhone">Phone Number</label>
+          <input type="tel" id="authSignupPhone" placeholder="Enter your phone number" required>
+          <div class="error-message" id="signupPhoneError"></div>
+        </div>
+
+        <div class="form-group-auth">
+          <label for="authSignupPassword">Password</label>
+          <input type="password" id="authSignupPassword" placeholder="Create a password" required>
+          <div class="error-message" id="signupPasswordError"></div>
+        </div>
+
+        <button type="button" class="auth-btn" onclick="handleSignup()">Sign Up</button>
+
+        <div class="auth-toggle">
+          <p>Already have an account? <button type="button" class="auth-toggle-btn" onclick="toggleAuthForm()">Login</button></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentDrink = {
+  name: '',
+  price: 0,
+  points: 0,
+  flavors: []
+};
+
+let selectedSize = 'M';
+
+function openModal(name, price, points, flavors) {
+  // Store drink data
+  currentDrink = { name, price, points, flavors };
+  selectedSize = 'M';
+
+  // Check if user is logged in FIRST
+  if (!isUserLoggedIn()) {
+    // Store the drink info temporarily so we can show it after login
+    sessionStorage.setItem('pendingDrinkSelection', JSON.stringify({ name, price, points, flavors }));
+    // If not logged in, show login modal immediately
+    openLoginModal();
+    return;
+  }
+
+  // If already logged in, show product modal directly
+  showProductModal();
+}
+
+function showProductModal() {
+  const drink = currentDrink;
+  selectedSize = 'M';
+
+  document.getElementById('modalDrinkName').textContent = drink.name;
+  document.getElementById('modalPrice').textContent = drink.price;
+  document.getElementById('modalPoints').textContent = drink.points;
+
+  const flavorSelect = document.getElementById('modalFlavor');
+  flavorSelect.innerHTML = '<option>Select a flavor</option>';
+  drink.flavors.forEach(flavor => {
+    const option = document.createElement('option');
+    option.value = flavor;
+    option.textContent = flavor;
+    flavorSelect.appendChild(option);
+  });
+
+  document.getElementById('modalQuantity').value = 1;
+  document.getElementById('modalNotes').value = '';
+
+  // Reset size buttons
+  document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.size-btn')[1].classList.add('active'); // M is default
+
+  updateTotal();
+  document.getElementById('drinkModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('drinkModal').classList.remove('show');
+  document.getElementById('drinkModal').style.display = 'none';
+}
+
+function selectSize(size) {
+  selectedSize = size;
+  document.querySelectorAll('.size-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function updateTotal() {
+  const quantity = parseInt(document.getElementById('modalQuantity').value) || 1;
+  const total = currentDrink.price * quantity;
+  document.getElementById('modalTotal').textContent = total;
+}
+
+document.getElementById('modalQuantity').addEventListener('change', updateTotal);
+
+function proceedToCheckout() {
+  const flavor = document.getElementById('modalFlavor').value;
+  const quantity = document.getElementById('modalQuantity').value;
+  const notes = document.getElementById('modalNotes').value;
+
+  if (flavor === 'Select a flavor') {
+    alert('Please select a flavor');
+    return;
+  }
+
+  // Store the order data temporarily
+  const orderData = {
+    drink: currentDrink.name,
+    flavor,
+    size: selectedSize,
+    quantity,
+    notes,
+    price: currentDrink.price,
+    points: currentDrink.points,
+    total: currentDrink.price * quantity
+  };
+
+  sessionStorage.setItem('pendingOrder', JSON.stringify(orderData));
+
+  // Check if user is logged in when clicking "Add to Cart"
+  if (!isUserLoggedIn()) {
+    closeModal(); // Close product modal
+    openLoginModal(); // Open login modal
+    return;
+  }
+
+  // If already logged in, proceed to checkout
+  completeOrder();
+}
+
+// Function to complete order after login
+function completeOrder() {
+  const orderData = JSON.parse(sessionStorage.getItem('pendingOrder'));
+  if (orderData) {
+    sessionStorage.removeItem('pendingOrder');
+    sessionStorage.setItem('orderData', JSON.stringify(orderData));
+    window.location.href = 'checkout.html';
+  }
+}
+
+// Helper function to check login
+function isUserLoggedIn() {
+  return localStorage.getItem('currentUser') !== null;
+}
+
+// Close modal when clicking outside
+window.onclick = function(event) {
+  const modal = document.getElementById('drinkModal');
+  if (event.target === modal) {
+    closeModal();
+  }
+}
+
+function handleLogin() {
+  const email = document.getElementById('authLoginEmail').value.trim();
+  const password = document.getElementById('authLoginPassword').value.trim();
+
+  // Clear previous errors
+  clearErrors();
+
+  if (!email) {
+    showError('loginEmailError', 'Email is required');
+    return;
+  }
+
+  if (!password) {
+    showError('loginPasswordError', 'Password is required');
+    return;
+  }
+
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  const user = users.find(u => u.email === email && u.password === password);
+
+  if (user) {
+    user.wallet = user.wallet || 0;
+    user.points = user.points || 0;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    closeLoginModal();
+
+    updateUserDisplay();
+    updateUserAccountDisplay();
+
+    // Check if there's a pending order
+    const pendingOrder = sessionStorage.getItem('pendingOrder');
+    if (pendingOrder) {
+      // Redirect to checkout after login
+      setTimeout(() => {
+        completeOrder();
+      }, 300);
+    } else {
+      // Check if there's a pending drink selection
+      const pendingDrink = sessionStorage.getItem('pendingDrinkSelection');
+      if (pendingDrink) {
+        const drinkData = JSON.parse(pendingDrink);
+        sessionStorage.removeItem('pendingDrinkSelection');
+        currentDrink = { name: drinkData.name, price: drinkData.price, points: drinkData.points, flavors: drinkData.flavors };
+        // Show the product modal after login
+        setTimeout(() => {
+          showProductModal();
+        }, 300);
+      }
+    }
+  } else {
+    showError('loginPasswordError', 'Invalid email or password');
+  }
+}
+
+function handleSignup() {
+  const username = document.getElementById('authSignupUsername').value.trim();
+  const email = document.getElementById('authSignupEmail').value.trim();
+  const phone = document.getElementById('authSignupPhone').value.trim();
+  const password = document.getElementById('authSignupPassword').value.trim();
+
+  // Clear previous errors
+  clearErrors();
+
+  if (!username) {
+    showError('signupNameError', 'Full name is required');
+    return;
+  }
+
+  if (!email) {
+    showError('signupEmailError', 'Email is required');
+    return;
+  }
+
+  if (!phone) {
+    showError('signupPhoneError', 'Phone number is required');
+    return;
+  }
+
+  if (!password) {
+    showError('signupPasswordError', 'Password is required');
+    return;
+  }
+
+  let users = JSON.parse(localStorage.getItem('users')) || [];
+
+  if (users.some(user => user.email === email)) {
+    showError('signupEmailError', 'Email already registered');
+    return;
+  }
+
+  const newUser = {
+    username,
+    email,
+    phone,
+    password,
+    wallet: 0,
+    points: 0
+  };
+
+  users.push(newUser);
+  localStorage.setItem('users', JSON.stringify(users));
+  localStorage.setItem('currentUser', JSON.stringify(newUser));
+
+  closeLoginModal();
+
+  updateUserDisplay();
+  updateUserAccountDisplay();
+
+  // Complete the order after successful signup
+  setTimeout(() => {
+    completeOrder();
+  }, 300);
+}
+
+// Toggle between login and signup forms
+function toggleAuthForm() {
+  const loginForm = document.getElementById('authLoginForm');
+  const signupForm = document.getElementById('authSignupForm');
+  const authTitle = document.getElementById('authTitle');
+
+  loginForm.classList.toggle('active');
+  signupForm.classList.toggle('active');
+
+  if (loginForm.classList.contains('active')) {
+    authTitle.textContent = 'Login';
+  } else {
+    authTitle.textContent = 'Sign Up';
+  }
+
+  clearErrors();
+  clearFormFields();
+}
+
+// Show error message
+function showError(elementId, message) {
+  const errorEl = document.getElementById(elementId);
+  if (errorEl) {
+    errorEl.textContent = message;
+    errorEl.classList.add('show');
+  }
+}
+
+// Clear all error messages
+function clearErrors() {
+  const errors = document.querySelectorAll('.error-message');
+  errors.forEach(error => {
+    error.classList.remove('show');
+    error.textContent = '';
+  });
+}
+
+// Clear form fields
+function clearFormFields() {
+  document.getElementById('authLoginEmail').value = '';
+  document.getElementById('authLoginPassword').value = '';
+  document.getElementById('authSignupUsername').value = '';
+  document.getElementById('authSignupEmail').value = '';
+  document.getElementById('authSignupPhone').value = '';
+  document.getElementById('authSignupPassword').value = '';
+}
+
+// Login Modal Functions
+function openLoginModal() {
+  document.getElementById('loginModal').classList.add('show');
+  // Reset to login view by default
+  const loginForm = document.getElementById('authLoginForm');
+  const signupForm = document.getElementById('authSignupForm');
+  const authTitle = document.getElementById('authTitle');
+
+  loginForm.classList.add('active');
+  signupForm.classList.remove('active');
+  authTitle.textContent = 'Login';
+
+  clearErrors();
+  clearFormFields();
+}
+
+function closeLoginModal() {
+  document.getElementById('loginModal').classList.remove('show');
+  clearFormFields();
+  clearErrors();
+}
+
+// Helper function to update user display
+function updateUserDisplay() {
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  if (currentUser) {
+    const userNameEl = document.getElementById('user-name');
+    const userPointsEl = document.getElementById('user-points');
+    const userBalanceEl = document.getElementById('user-balance');
+
+    if (userNameEl) userNameEl.textContent = currentUser.username;
+    if (userPointsEl) userPointsEl.textContent = currentUser.points;
+    if (userBalanceEl) userBalanceEl.textContent = currentUser.wallet + ' EGY';
+  }
+}
+
+// Function to update user account display (top left)
+function updateUserAccountDisplay() {
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const userDisplay = document.getElementById('user-account-display');
+  
+  if (currentUser && userDisplay) {
+    userDisplay.style.display = 'block';
+    document.getElementById('user-display-name').textContent = currentUser.username || 'User';
+    document.getElementById('user-display-email').textContent = currentUser.email || '';
+    document.getElementById('user-display-points').textContent = currentUser.points || 0;
+    document.getElementById('user-display-wallet').textContent = (currentUser.wallet || 0) + ' EGY';
+    
+    // Set initial letter
+    const initial = (currentUser.username || 'U').charAt(0).toUpperCase();
+    document.getElementById('user-initial').textContent = initial;
+  } else if (userDisplay) {
+    userDisplay.style.display = 'none';
+  }
+}
+
+// Function to logout
+function logout() {
+  localStorage.removeItem('currentUser');
+  updateUserDisplay();
+  updateUserAccountDisplay();
+  // Reload page to reflect logout
+  window.location.reload();
+}
+
+// Check user on page load
+document.addEventListener('DOMContentLoaded', function() {
+  updateUserDisplay();
+  updateUserAccountDisplay();
+});
+</script>
+
+
+
+<script type="module" src="firebase.js"></script>
+<script type="module" src="script.js"></script>
+<script type="module" src="cart.js"></script>
+</body>
+</html>

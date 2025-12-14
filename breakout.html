@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakout Cafe - Login</title>
+    <link rel="stylesheet" href="breakout.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <section class="nav text-center my-2">
+        <h3 class="span loader">
+            <span class="m">B</span>
+            <span class="m">R</span>
+            <span class="m">E</span>
+            <span class="m">A</span>
+            <span class="m">K</span>
+            <span class="m">O</span>
+            <span class="m">U</span>
+            <span class="m">T</span>
+        </h3>
+    </section>
+    
+
+    <div class="main">
+        <input type="checkbox" id="chk" aria-hidden="true">
+
+        <!-- SIGN UP -->
+        <div class="signup">
+            <form id="signupForm">
+                <label for="chk" aria-hidden="true">Sign up</label>
+                <input type="text" name="txt" placeholder="User name" required autocomplete="username">
+                <input type="email" name="email" placeholder="Email" required autocomplete="email">
+                <input type="number" name="broj" placeholder="Phone Number" required autocomplete="tel">
+                <input type="password" name="pswd" placeholder="Password" required autocomplete="new-password">
+                <button type="submit">Sign up</button>
+            </form>
+        </div>
+
+   <!-- LOGIN -->
+<div class="login">
+    <form id="loginForm">
+        <label for="chk" aria-hidden="true">Login</label>
+        <input type="email" name="email" placeholder="Email" required autocomplete="email">
+        <input type="password" name="pswd" placeholder="Password" required autocomplete="current-password">
+        <button type="submit">Login</button>
+
+        <!-- زرار Admin Login -->
+        <button type="button" id="admin-btn" class="admin-btn">Admin Login</button>
+    </form>
+</div>
+
+<style>
+/* Admin button styling */
+.admin-btn {
+    margin-top: 10px;
+    background: none;
+    border: none;
+    color: #2D5F3F;
+    cursor: pointer;
+    font-size: 0.9em;
+    text-decoration: underline;
+    display: inline-block;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+}
+.admin-btn:hover {
+    color: #1a4d2e;
+}
+</style>
+
+<script>
+const adminBtn = document.getElementById("admin-btn");
+adminBtn.addEventListener("click", () => {
+    // لو صفحة Dashboard موجودة في مجلد dashboard
+    window.location.href = "dashbord-login.html";
+});
+</script>
+
+
+
+        
+    </div>
+<script type="module" src="firebase.js"></script>
+    <script type="module" src="./breakout.js"></script>
+</body>
+</html>

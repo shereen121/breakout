@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Jost', sans-serif;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .dashboard-login {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    width: 300px;
+    text-align: center;
+  }
+  .dashboard-login h2 {
+    margin-bottom: 20px;
+    color: #FF6600;
+  }
+  .dashboard-login input {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 0.95em;
+  }
+  .dashboard-login button {
+    width: 100%;
+    padding: 10px;
+    background: #FF6600;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .dashboard-login button:hover {
+    background: #cc5200;
+  }
+  .error {
+    color: red;
+    font-size: 0.85em;
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="dashboard-login">
+  <h2>Admin Login</h2>
+  <p class="error" id="error-msg"></p>
+  <input type="email" id="admin-email" placeholder="Email" required>
+  <input type="password" id="admin-password" placeholder="Password" required>
+  <button id="login-btn">Login</button>
+</div>
+
+<script type="module">
+  import { auth } from "./firebase.js";
+  import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+  const loginBtn = document.getElementById("login-btn");
+  const errorMsg = document.getElementById("error-msg");
+
+  loginBtn.addEventListener("click", async () => {
+    const email = document.getElementById("admin-email").value;
+    const password = document.getElementById("admin-password").value;
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      // تحقق من أن هذا المستخدم Admin (مثلاً من خلال إيميل محدد)
+      const adminEmail = "breakout2163@gmail.com"; // ضع هنا إيميل الادمن
+      if(user.email !== adminEmail){
+        errorMsg.textContent = "❌ ليس لديك صلاحيات دخول الادمن!";
+        auth.signOut();
+        return;
+      }
+
+      // إعادة توجيه لصفحة Dashboard الرئيسية
+      window.location.href = "dashboard.html";
+    } catch (err) {
+      errorMsg.textContent = "❌ خطأ في البريد الإلكتروني أو كلمة المرور";
+      console.error(err);
+    }
+  });
+</script>
+
+</body>
+</html>
